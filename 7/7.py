@@ -1,10 +1,9 @@
 from enum import Enum
 from pathlib import Path
-from typing import List
 
 from util import load_txt_file_as_list_of_str, SubProblem
 
-INPUT_FILE_PATH = Path("input")
+INPUT_FILE_PATH = Path("input_test_7.txt")
 SUB_PROBLEM = SubProblem.ONE
 
 CARD_MAPPING = {"T": 10, "J": 11, "Q": 12, "K": 13, "A": 14}
@@ -21,6 +20,7 @@ class HandType(Enum):
 class Hand:
     cards: str
     hand_type: HandType
+    rank: int
 
     def __init__(self, cards: str):
         self.cards = cards
@@ -64,3 +64,5 @@ hand4 = Hand("TTT98")
 hand5 = Hand("23432")
 hand6 = Hand("A23A4")
 hand7 = Hand("23456")
+
+input_array = load_txt_file_as_list_of_str(INPUT_FILE_PATH)
