@@ -20,7 +20,7 @@ def create_input_files(path, idx: int):
     with open(os.path.join(path, "input.txt"), 'w') as _:
         pass
 
-    with open(os.path.join(path, "input_test_" + str(idx) + ".txt"), 'w') as _:
+    with open(os.path.join(path, "input_test_1.txt"), 'w') as _:
         pass
 
 def prepare_dirs():
