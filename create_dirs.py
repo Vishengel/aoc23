@@ -16,7 +16,7 @@ input_array = load_txt_file_as_list_of_str(INPUT_FILE_PATH)
     with open(os.path.join(path, str(idx) + ".py"), 'w') as skeleton_file:
         skeleton_file.write(skeleton)
 
-def create_input_files(path, idx: int):
+def create_input_files(path):
     with open(os.path.join(path, "input.txt"), 'w') as _:
         pass
 
