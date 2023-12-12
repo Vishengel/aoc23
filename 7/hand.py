@@ -1,8 +1,9 @@
+from collections import Counter
 from enum import Enum
+from typing import Optional
 
-HAND_SIZE = 5
-# CARD_MAPPING = {"T": 10, "J": 11, "Q": 12, "K": 13, "A": 14}
-CARD_MAPPING = {"A": 10, "B": 11, "C": 12, "D": 13, "E": 14}
+import config
+from util import SubProblem
 
 
 class HandType(Enum):
@@ -21,7 +22,16 @@ class Hand:
 
     def __init__(self, cards: str):
         self.cards = cards
+
         self.hand_type = self.get_hand_type(cards)
+
+        if config.SUB_PROBLEM == SubProblem.TWO and "1" in cards:
+            if len(cards.replace("1", "")) > 0:
+                most_freq_char = find_most_freq_char_in_str(cards.replace("1", ""))
+                new_hand_type = self.get_hand_type(cards.replace("1", most_freq_char))
+
+                if new_hand_type.value > self.hand_type.value:
+                    self.hand_type = new_hand_type
 
     @staticmethod
     def get_hand_type(cards: str) -> HandType:
@@ -53,4 +63,10 @@ def get_card_value(card: str) -> int:
     if card.isdigit():
         return int(card)
 
-    return CARD_MAPPING[card]
+    return config.CARD_MAPPING[card]
+
+
+def find_most_freq_char_in_str(input_string: str) -> str:
+    counter = Counter(input_string)
+    res = max(counter, key=counter.get)
+    return res
