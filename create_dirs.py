@@ -2,6 +2,7 @@ import os
 
 N_PROBLEMS = 25
 
+
 def create_skeleton_script(path, idx: int):
     skeleton = """from pathlib import Path
 
@@ -16,21 +17,26 @@ input_array = load_txt_file_as_list_of_str(INPUT_FILE_PATH)
     with open(os.path.join(path, str(idx) + ".py"), 'w') as skeleton_file:
         skeleton_file.write(skeleton)
 
-def create_input_files(path):
-    with open(os.path.join(path, "input.txt"), 'w') as _:
+
+def create_files(path):
+    with open(os.path.join(path, "__init__.py"), 'w') as _:
         pass
 
-    with open(os.path.join(path, "input_test_1.txt"), 'w') as _:
+    with open(os.path.join(path, "input"), 'w') as _:
         pass
+
+    with open(os.path.join(path, "input_test_1"), 'w') as _:
+        pass
+
 
 def prepare_dirs():
     root_path = os.path.dirname(__file__)
-    for idx in range(8, N_PROBLEMS+1):
+    for idx in range(1, N_PROBLEMS + 1):
         new_dir_path = os.path.join(root_path, str(idx))
         if not os.path.exists(new_dir_path):
             os.makedirs(new_dir_path)
             create_skeleton_script(new_dir_path, idx)
-            create_input_files(new_dir_path, idx)
+            create_files(new_dir_path)
 
 
 if __name__ == "__main__":
