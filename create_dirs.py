@@ -14,7 +14,7 @@ SUB_PROBLEM = SubProblem.ONE
 input_array = load_txt_file_as_list_of_str(INPUT_FILE_PATH)
 """
 
-    with open(os.path.join(path, str(idx) + ".py"), 'w') as skeleton_file:
+    with open(os.path.join(path, f"p{str(idx)}.py"), 'w') as skeleton_file:
         skeleton_file.write(skeleton)
 
 
@@ -32,7 +32,7 @@ def create_files(path):
 def prepare_dirs():
     root_path = os.path.dirname(__file__)
     for idx in range(1, N_PROBLEMS + 1):
-        new_dir_path = os.path.join(root_path, str(idx))
+        new_dir_path = os.path.join(root_path, f"p{str(idx)}")
         if not os.path.exists(new_dir_path):
             os.makedirs(new_dir_path)
             create_skeleton_script(new_dir_path, idx)
