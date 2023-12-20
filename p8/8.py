@@ -52,6 +52,8 @@ def find_n_steps_subproblem_two_brute_force(nodes, instructions) -> int:
 
     return n_steps
 
+def is_solution(n_steps: int, n_cycle_steps_list: List[int]):
+    return all(n_steps % n_cycle_steps == 0 for n_cycle_steps in n_cycle_steps_list)
 
 def find_n_steps_subproblem_two(nodes, instructions) -> int:
     starting_nodes = []
@@ -79,9 +81,11 @@ def find_n_steps_subproblem_two(nodes, instructions) -> int:
 
         n_cycle_steps_list.append(n_cycle_steps)
 
-    n_steps = 1
-    for number in n_cycle_steps_list:
-        n_steps *= number
+    n_steps = min(n_cycle_steps_list)
+
+    while not is_solution(n_steps, n_cycle_steps_list):
+        n_steps += min(n_cycle_steps_list)
+
     return n_steps
 
 
@@ -93,5 +97,6 @@ if SUB_PROBLEM == SubProblem.ONE:
     n_steps = find_n_steps_subproblem_one(nodes, instructions)
     print(n_steps)
 else:
+    # 13524038372771
     n_steps = find_n_steps_subproblem_two(nodes, instructions)
     print(n_steps)
