@@ -1,3 +1,4 @@
+from math import gcd
 from pathlib import Path
 from typing import List
 
@@ -30,27 +31,15 @@ def all_nodes_end_in_z(nodes: List[str]):
     return all(node[-1] == "Z" for node in nodes)
 
 
-def find_n_steps_subproblem_two_brute_force(nodes, instructions) -> int:
-    n_steps = 0
-    current_nodes = []
-    for node in nodes.keys():
-        if node[-1] == "A":
-            current_nodes.append(node)
+def lcm(x: int, y: int) -> int:
+    return (x * y) // gcd(x, y)
 
-    while not all_nodes_end_in_z(current_nodes):
-        for instruction_idx, instruction in enumerate(instructions):
-            for node_idx, current_node in enumerate(current_nodes):
-                if instruction == "L":
-                    current_nodes[node_idx] = nodes[current_node][0]
-                else:
-                    current_nodes[node_idx] = nodes[current_node][1]
 
-            n_steps += 1
-
-            if all_nodes_end_in_z(current_nodes) or instruction_idx == (len(instructions) - 1):
-                break
-
-    return n_steps
+def find_lcm_of_list(numbers: List[int]) -> int:
+    result_lcm = numbers[0]
+    for i in range(1, len(numbers)):
+        result_lcm = lcm(result_lcm, numbers[i])
+    return result_lcm
 
 
 def find_n_steps_subproblem_two(nodes, instructions) -> int:
@@ -79,10 +68,7 @@ def find_n_steps_subproblem_two(nodes, instructions) -> int:
 
         n_cycle_steps_list.append(n_cycle_steps)
 
-    n_steps = 1
-    for number in n_cycle_steps_list:
-        n_steps *= number
-    return n_steps
+    return find_lcm_of_list(n_cycle_steps_list)
 
 
 input_array = [line for line in load_txt_file_as_list_of_str(INPUT_FILE_PATH) if len(line) > 0]
