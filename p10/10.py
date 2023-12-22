@@ -4,10 +4,10 @@ from typing import List, Tuple, Optional
 
 from bidict import bidict
 
-from util import SubProblem, load_txt_file_as_list_of_str, load_txt_file_as_list_of_list_of_str
+from util import SubProblem, load_txt_file_as_list_of_list_of_str
 
-INPUT_FILE_PATH = Path("input")
-SUB_PROBLEM = SubProblem.ONE
+INPUT_FILE_PATH = Path("input_test_2a")
+SUB_PROBLEM = SubProblem.TWO
 
 
 class Direction(IntEnum):
@@ -19,8 +19,10 @@ class Direction(IntEnum):
 
 SYMBOL_TO_PIPE_MAP = bidict({"|": (Direction.NORTH, Direction.SOUTH), "-": (Direction.EAST, Direction.WEST),
                              "L": (Direction.NORTH, Direction.EAST), "J": (Direction.NORTH, Direction.WEST),
-                             "7": (Direction.SOUTH, Direction.WEST), "F": (Direction.EAST, Direction.SOUTH,),
+                             "7": (Direction.SOUTH, Direction.WEST), "F": (Direction.EAST, Direction.SOUTH),
                              ".": (None, None)})
+
+GENERIC_PIPE_INDICATOR = "P"
 
 DIR_TO_COORD_CHANGE_MAP = {Direction.NORTH: (-1, 0), Direction.EAST: (0, 1),
                            Direction.SOUTH: (1, 0), Direction.WEST: (0, -1)}
@@ -96,8 +98,39 @@ class PipeMaze:
                     self.pipe.append(next_pipe_segment)
                     queue.append(next_pipe_segment)
 
+        self._mark_pipe_in_grid()
+
+    def _mark_pipe_in_grid(self):
+        for pipe_segment in self.pipe:
+            self.maze_grid[pipe_segment.coords[0]][pipe_segment.coords[1]] = GENERIC_PIPE_INDICATOR
+
     def find_furthest_distance(self):
         return max(self.pipe, key=lambda pipe_seg: pipe_seg.dist_from_start).dist_from_start
+
+
+    def _has_pipe_in_direction(self, coords: Tuple[int, int], direction: Direction):
+        if coords[0] < 0 or coords[0] >= len(self.maze_grid) or coords[1] < 0 or coords[1] >= len(self.maze_grid[0]):
+            return False
+
+        if self.maze_grid[coords[0]][coords[1]] == GENERIC_PIPE_INDICATOR:
+            return True
+
+        new_coords = (coords[0] + DIR_TO_COORD_CHANGE_MAP[direction][0],
+                      coords[1] + DIR_TO_COORD_CHANGE_MAP[direction][1])
+
+        return self._has_pipe_in_direction(new_coords, direction)
+
+    def get_n_enclosed_tiles(self):
+        n_enclosed_tiles = 0
+
+        for y, row in enumerate(self.maze_grid):
+            for x, col in enumerate(row):
+                if col == GENERIC_PIPE_INDICATOR:
+                    continue
+                n_enclosed_tiles += (
+                    int(all([self._has_pipe_in_direction((y, x), direction) for direction in Direction])))
+
+        return n_enclosed_tiles
 
     @staticmethod
     def _find_start_coords(maze_grid: List[List[str]]) -> Tuple[int, int]:
@@ -131,8 +164,18 @@ class PipeMaze:
 
         return SYMBOL_TO_PIPE_MAP.inverse[(possible_dirs[0], possible_dirs[1])]
 
+    def print_maze(self):
+        for row in self.maze_grid:
+            print("".join(row))
+
 
 input_array = load_txt_file_as_list_of_list_of_str(INPUT_FILE_PATH)
 pipe_maze = PipeMaze(input_array)
 pipe_maze.explore_pipe()
-print(pipe_maze.find_furthest_distance())
+
+if SUB_PROBLEM == SubProblem.ONE:
+    print(pipe_maze.find_furthest_distance())
+else:
+    pipe_maze.print_maze()
+    print(pipe_maze.get_n_enclosed_tiles())
+

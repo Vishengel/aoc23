@@ -25,7 +25,7 @@ def create_files(path):
     with open(os.path.join(path, "input"), 'w') as _:
         pass
 
-    with open(os.path.join(path, "input_test_1"), 'w') as _:
+    with open(os.path.join(path, "input_test_1a"), 'w') as _:
         pass
 
 
