@@ -1,6 +1,5 @@
 from collections import Counter
 from enum import Enum
-from typing import Optional
 
 import config
 from util import SubProblem
