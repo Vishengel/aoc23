@@ -9,7 +9,7 @@ DAY = 1
 def create_dir() -> Path:
     root_dir = pathlib.Path(__file__).parent.resolve()
     year_dir = root_dir / str(YEAR)
-    puzzle_dir = year_dir / f"puzzle{DAY}"
+    puzzle_dir = year_dir / f"day{DAY}"
     puzzle_dir.mkdir(parents=True, exist_ok=True)
     return puzzle_dir
 
