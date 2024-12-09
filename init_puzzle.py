@@ -1,9 +1,8 @@
-import os
 import pathlib
 from pathlib import Path
 
 YEAR = 2024
-DAY = 1
+DAY = 2
 
 
 def create_dir() -> Path:
@@ -38,13 +37,9 @@ if __name__ == "__main__":
         skeleton_file.write(skeleton)
 
 
-def get_input():
-    input_url = f"https://adventofcode.com/{YEAR}/day/{DAY}/input"
-
-
 def create_files(puzzle_dir: Path):
     create_skeleton_script(puzzle_dir)
-    for idx in range(3):
+    for idx in range(4):
         try:
             (puzzle_dir / f"input{idx}.txt").touch(exist_ok=False)
         except FileExistsError:
