@@ -14,7 +14,7 @@ def get_neighbor_coords(cur_x: int, cur_y: int) -> List[Tuple[int, int]]:
 
 
 def follow_letters(input_array: List[str], cur_x: int, cur_y: int, next_letter_idx: int, count: int):
-
+    ...
 
 def main():
     input_array = load_txt_file_as_list_of_str(INPUT_FILE_PATH)
