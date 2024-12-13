@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import List, Tuple, Set
 
-from util import load_txt_file_as_list_of_str, SubProblem
+from util import load_txt_file_as_list_of_str, SubProblem, is_out_of_bounds
 
 INPUT_FILE_PATH = Path("input1.txt")
 SUB_PROBLEM = SubProblem.ONE
@@ -49,12 +49,6 @@ def follow_letters_all_directions(input_array: List[str], cur_x: int, cur_y: int
             count = follow_letters_all_directions(input_array, new_x, new_y, cur_letter_idx + 1, count)
 
     return count
-
-
-def is_out_of_bounds(input_array: List[str], cur_x: int, cur_y: int):
-    array_height = len(input_array)
-    array_width = len(input_array[0])
-    return cur_x < 0 or cur_x == array_width or cur_y < 0 or cur_y == array_height
 
 
 def follow_letters_straight_line(input_array: List[str], cur_x: int, cur_y: int, x_inc: int, y_inc: int,
