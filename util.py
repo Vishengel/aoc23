@@ -34,4 +34,4 @@ def is_out_of_bounds(input_array: Union[List[str], List[List]], x_pos: int, y_po
     """
     array_height = len(input_array)
     array_width = len(input_array[0])
-    return x_pos < 0 or x_pos == array_width or y_pos < 0 or y_pos == array_height
+    return x_pos < 0 or x_pos >= array_width or y_pos < 0 or y_pos >= array_height
