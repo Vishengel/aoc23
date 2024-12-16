@@ -2,7 +2,7 @@ import pathlib
 from pathlib import Path
 
 YEAR = 2024
-DAY = 4
+DAY = 5
 
 
 def create_dir() -> Path:
