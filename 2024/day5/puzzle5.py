@@ -3,7 +3,7 @@ from typing import List, Dict, Optional
 
 from util import load_txt_file_as_list_of_str, SubProblem
 
-INPUT_FILE_PATH = Path("input0.txt")
+INPUT_FILE_PATH = Path("input1.txt")
 SUB_PROBLEM = SubProblem.ONE
 
 
@@ -48,10 +48,47 @@ class UpdateHandler:
         update_list = [int(page_number) for page_number in line.split(self.UPDATE_SEPARATOR)]
         self.updates.append(update_list)
 
+    def handle_updates(self) -> int:
+        update_counter = 0
+        for update in self.updates:
+            if SUB_PROBLEM == SubProblem.ONE and self._is_correct_update(update):
+                update_counter += self._get_middle_page_number(update)
+            elif SUB_PROBLEM == SubProblem.ONE and not self._is_correct_update(update):
+                update_counter += self._get_middle_page_number(update, True)
+
+        return update_counter
+
+    def _is_correct_update(self, update: List[int]) -> bool:
+        for idx, page_number in enumerate(update):
+            if page_number not in self.rules:
+                # In this case, there are no rules that state that dictate that some numbers can't follow this number
+                continue
+            rules_for_page_number = set(self.rules[page_number])
+            rest_of_update = set(update[:idx])
+
+            if len(rules_for_page_number.intersection(rest_of_update)) > 0:
+                return False
+
+        return True
+
+    def _get_middle_page_number(self, update: List[int], fix_ordering: bool = False) -> int:
+        assert len(update) % 2 == 1, f"Length of update is {update} is even"
+
+        if fix_ordering:
+            update = self._fix_ordering(update)
+
+        return update[len(update) // 2]
+
+    def _fix_ordering(self, update: List[int]) -> List[int]:
+        # Placeholder for problem b
+        return update
+
 
 def main():
     input_array = load_txt_file_as_list_of_str(INPUT_FILE_PATH)
     update_handler = UpdateHandler(input_array=input_array)
+    page_number_sum = update_handler.handle_updates()
+    print(page_number_sum)
 
 
 if __name__ == "__main__":
