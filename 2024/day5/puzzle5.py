@@ -1,10 +1,12 @@
 from pathlib import Path
 from typing import List, Dict, Optional
 
-from util import load_txt_file_as_list_of_str, SubProblem
+from tqdm import tqdm
+
+from util import load_txt_file_as_list_of_str, SubProblem, swap_list_elements
 
 INPUT_FILE_PATH = Path("input1.txt")
-SUB_PROBLEM = SubProblem.ONE
+SUB_PROBLEM = SubProblem.TWO
 
 
 class UpdateHandler:
@@ -50,10 +52,10 @@ class UpdateHandler:
 
     def handle_updates(self) -> int:
         update_counter = 0
-        for update in self.updates:
+        for update in tqdm(self.updates):
             if SUB_PROBLEM == SubProblem.ONE and self._is_correct_update(update):
                 update_counter += self._get_middle_page_number(update)
-            elif SUB_PROBLEM == SubProblem.ONE and not self._is_correct_update(update):
+            elif SUB_PROBLEM == SubProblem.TWO and not self._is_correct_update(update):
                 update_counter += self._get_middle_page_number(update, True)
 
         return update_counter
@@ -80,8 +82,22 @@ class UpdateHandler:
         return update[len(update) // 2]
 
     def _fix_ordering(self, update: List[int]) -> List[int]:
-        # Placeholder for problem b
-        return update
+        # Reeeeally ugly code
+        corrected_update = update.copy()
+        while not self._is_correct_update(corrected_update):
+            for idx1, _ in enumerate(corrected_update[1:], start=1):
+                page_number1 = corrected_update[idx1]
+                if page_number1 not in self.rules:
+                    # In this case, there are no rules that state that dictate that some numbers can't follow this number
+                    continue
+                rules_for_page_number = self.rules[page_number1]
+                for idx2, _ in enumerate(corrected_update[idx1 - 1::-1]):
+                    page_number2 = corrected_update[idx2]
+                    if page_number2 in rules_for_page_number:
+                        swap_list_elements(corrected_update, idx1, idx2)
+                        if self._is_correct_update(corrected_update):
+                            return corrected_update
+        return corrected_update
 
 
 def main():

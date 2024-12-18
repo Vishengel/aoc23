@@ -1,6 +1,6 @@
 from enum import Enum
 from pathlib import Path
-from typing import List, Union
+from typing import List, Union, Any
 
 
 class SubProblem(Enum):
@@ -35,3 +35,10 @@ def is_out_of_bounds(input_array: Union[List[str], List[List]], x_pos: int, y_po
     array_height = len(input_array)
     array_width = len(input_array[0])
     return x_pos < 0 or x_pos >= array_width or y_pos < 0 or y_pos >= array_height
+
+
+def swap_list_elements(array: List[Any], idx1: int, idx2: int):
+    temp = array[idx1]
+    array[idx1] = array[idx2]
+    array[idx2] = temp
+    return array
