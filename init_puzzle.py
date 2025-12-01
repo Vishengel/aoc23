@@ -1,8 +1,8 @@
 import pathlib
 from pathlib import Path
 
-YEAR = 2024
-DAY = 6
+YEAR = 2025
+DAY = 1
 
 
 def create_dir() -> Path:
