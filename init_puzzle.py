@@ -2,7 +2,7 @@ import pathlib
 from pathlib import Path
 
 YEAR = 2025
-DAY = 2
+DAY = 3
 
 
 def create_dir() -> Path:
@@ -35,6 +35,8 @@ if __name__ == "__main__":
 
     with open(path, 'w') as skeleton_file:
         skeleton_file.write(skeleton)
+
+    (puzzle_dir / "__init__.py").touch(exist_ok=True)
 
 
 def create_files(puzzle_dir: Path):
