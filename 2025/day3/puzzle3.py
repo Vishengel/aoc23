@@ -1,4 +1,3 @@
-from operator import index
 from pathlib import Path
 
 from util import load_txt_file_as_list_of_str, SubProblem
